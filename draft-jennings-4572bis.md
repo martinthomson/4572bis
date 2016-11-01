@@ -3,8 +3,9 @@
     abbrev = "Comedia over TLS in SDP"
     category = "std"
     docName = "draft-jennings-4572bis-00"
-    ipr= "trust200902"
+    ipr = "trust200902"
     area = "ART"
+    obsoletes = [ 4572 ]
 
     [pi]
     symrefs = "no"
@@ -17,7 +18,8 @@
     fullname = " Jonathan Lennox"
     organization = "Columbia University Department of Computer Science"
       [author.address]
-      email = " lennox@cs.columbia.edu"
+      email = "lennox@cs.columbia.edu"
+
 
 %%%
 
@@ -292,31 +294,60 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
 ```
 Figure 2: Augmented Backus-Naur Syntax for the Fingerprint Attribute
 
-A certificate fingerprint MUST be computed using the same one-way hash
-function as is used in the certificate's signature algorithm.  (This
-ensures that the security properties required for the certificate also
-apply for the fingerprint.  It also guarantees that the fingerprint
-will be usable by the other endpoint, so long as the certificate
-itself is.)
 Following RFC 3279 [@!RFC3279] as updated by RFC 4055 [@!RFC4055],
 therefore, the defined hash functions are 'SHA-1' [@!FIPS.180-2.2002]
 [@RFC3174], 'SHA-224' [@!FIPS.180-2.2002], 'SHA-256'
-[@!FIPS.180-2.2002], 'SHA-384' [@!FIPS.180-2.2002], 'SHA-512'
+[@!FIPS.180-2.2002], 'SHA-384'[@!FIPS.180-2.2002], 'SHA-512'
 [@!FIPS.180-2.2002], 'MD5' [@!RFC1321], and 'MD2' [@!RFC1319],
-with 'SHA-1' preferred.
+with 'SHA-256' preferred.
 A new IANA registry of Hash Function Textual Names, specified in
 Section 8, allows for addition of future tokens, but they may only be
 added if they are included in RFCs that update or obsolete RFC 3279
 [@!RFC3279].
-Self-signed certificates (for which legacy certificates are not a
-consideration) MUST use one of the FIPS 180 algorithms (SHA-1,
-SHA-224, SHA-256, SHA-384, or SHA-512) as their signature algorithm,
-and thus also MUST use it to calculate certificate fingerprints.
 
 The fingerprint attribute may be either a session-level or a media-
 level SDP attribute.  If it is a session-level attribute, it applies
 to all TLS sessions for which no media-level fingerprint attribute is
 defined.
+
+ Multiple SDP fingerprint attributes can be associated with an m-
+ line. This can occur if multiple fingerprints have been calculated
+ for a certificate using different hash functions. It can also occur
+ if one or more fingerprints associated with multiple certificates
+ have been calculated. This might be needed if multiple certificates
+ will be used for media associated with an m- line (e.g. if separate
+ certificates are used for RTP and RTCP), or where it is not known
+ which certificate will be used when the fingerprints are
+ exchanged. In such cases, one or more fingerprints MUST be calculated
+ for each possible certificate. An endpoint MUST, as a minimum,
+ calculate a fingerprint using both the 'SHA-256' hash function
+ algorithm and the hash function used to generate the signature on the
+ certificate for each possible certificate.  Including the hash from
+ the signature algorithm ensures interoperability with strict
+ implementations of RFC 4572 [@RFC4572].  Either of these fingerprints
+ MAY be omitted if the endpoint includes a hash with a stronger hash
+ algorithm that it knows that the peer supports, if it is known that
+ the peer does not support the hash algorithm, or if local policy
+ mandates use of stronger algorithms.
+
+If fingerprints associated with multiple certificates are calculated,
+the same set of hash functions MUST be used to calculate fingerprints
+for each certificate associated with the m- line.
+
+For each used certificate, an endpoint MUST be able to match at least
+one fingerprint, calculated using the hash function that the endpoint
+supports and considers most secure, with the used certificate. If the
+checked fingerprint does not match the used certificate, the endpoint
+MUST NOT establish the TLS connection. In addition, the endpoint MAY
+also check fingerprints calculated using other hash functions that it
+has received for a match. For each hash function checked, one of the
+received fingerprints calculated using the hash function MUST match
+the used certificate.
+
+NOTE: The SDP fingerprint attribute does not contain a reference to a
+specific certificate. Endpoints need to compare the fingerprint with a
+certificate hash in order to look for a match.
+
 
 #  Endpoint Identification
 
