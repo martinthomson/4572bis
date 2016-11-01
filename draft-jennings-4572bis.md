@@ -20,6 +20,14 @@
       [author.address]
       email = "lennox@cs.columbia.edu"
 
+   [[author]]
+    initials = "C."
+    surname = "Holmberg"
+    fullname = " Christer Holmberg"
+    organization = "Ericsson"
+      [author.address]
+      email = "christer.holmberg@ericsson.com"
+
 
 %%%
 
@@ -35,7 +43,6 @@ mechanism allows media transport over TLS connections to be
 established securely, so long as the integrity of session descriptions
 is assured.
 
-This document extends and updates RFC 4145.
 
 {mainmatter}
 
@@ -92,6 +99,18 @@ assuming that the integrity of SDP content is assured, allows the
 secure use of self-signed certificates.  Section 6 describes which
 X.509 certificates are presented, and how they are used in TLS.
 Section 7 discusses additional security considerations.
+
+This document obsoletes [@RFC4572] but remains backwards compatible
+with older implementations.  The changes from [@RFC4572] are that it
+clarified that multiple 'fingerprint' attributes can be used to carry
+fingerprints, calculated using different hash functions, associated
+with a given certificate, and to carry fingerprints associated with
+multiple certificates.  The fingerprint matching procedure, when
+multiple fingerprints are provided, are also clarified.  The document
+also updates the preferred cipher suite with a stronger cipher suite,
+and removes the requirement to use the same hash function for
+calculating a certificate fingerprint and certificate signature.
+   
 
 #  Terminology
 
@@ -525,7 +544,17 @@ TLS is not always the most appropriate choice for secure connection-
 oriented media; in some cases, a higher- or lower-level security
 protocol may be appropriate.
 
+This document improves security from the RFC 4572 [@RFC4572].  It
+updates the preferred hash function cipher suite from SHA-1 to
+SHA-256.  By clarifying the usage and handling of multiple
+fingerprints, the document also enables hash agility, and incremental
+deployment of newer, and more secure, cipher suites.
+
 #  IANA Considerations
+
+Note to IANA. No IANA considerations are changes from RFC4572
+[@RFC4572] so the only actions required are to update the registreis
+to point at this specification.
 
 This document defines an SDP proto value: 'TCP/TLS'.  Its format is
 defined in Section 4.  This proto value has been registered by IANA
