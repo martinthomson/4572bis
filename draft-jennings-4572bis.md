@@ -8,7 +8,7 @@
 
     [pi]
     symrefs = "no"
-    sortrefs = "no"
+    sortrefs = "yes"
 	toc = "yes"
 
     [[author]]
@@ -39,19 +39,19 @@
 
 # Introduction
 
-   The Session Description Protocol (SDP) [1] provides a general-purpose
+   The Session Description Protocol (SDP) [@!RFC4566] provides a general-purpose
    format for describing multimedia sessions in announcements or
    invitations.  For many applications, it is desirable to establish, as
    part of a multimedia session, a media stream that uses a connection-
    oriented transport.  RFC 4145, Connection-Oriented Media Transport in
-   the Session Description Protocol (SDP) [2], specifies a general
+   the Session Description Protocol (SDP) [@!RFC4145], specifies a general
    mechanism for describing and establishing such connection-oriented
    streams; however, the only transport protocol it directly supports is
    TCP.  In many cases, session participants wish to provide
    confidentiality, data integrity, and authentication for their media
    sessions.  This document therefore extends the Connection-Oriented
    Media specification to allow session descriptions to describe media
-   sessions that use the Transport Layer Security (TLS) protocol [3].
+   sessions that use the Transport Layer Security (TLS) protocol [@!RFC4346].
 
    The TLS protocol allows applications to communicate over a channel
    that provides confidentiality and data integrity.  The TLS
@@ -95,7 +95,7 @@
 
    In this document, the key words "MUST", "MUST NOT", "REQUIRED",
    "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
-   and "OPTIONAL" are to be interpreted as described in RFC 2119 [4] and
+   and "OPTIONAL" are to be interpreted as described in RFC 2119 [@!RFC2119] and
    indicate requirement levels for compliant implementations.
 
 #  Overview
@@ -111,7 +111,7 @@
    mode.  In this mode, a server publishes, in some manner, an SDP
    session description of a multimedia session it is making available.
    The classic example of this mode of operation is the Session
-   Announcement Protocol (SAP) [15], in which SDP session descriptions
+   Announcement Protocol (SAP) [@RFC2974], in which SDP session descriptions
    are periodically transmitted to a well-known multicast group.
    Traditionally, these descriptions involve multicast conferences, but
    unicast sessions are also possible.  (Connection-oriented media,
@@ -120,7 +120,7 @@
    description.  These recipients may not previously have been known to
    the advertiser of the session description.
 
-   Alternatively, SDP conferences can operate in offer-answer mode [5].
+   Alternatively, SDP conferences can operate in offer-answer mode [@!RFC3264].
    This mode allows two participants in a multimedia session to
    negotiate the multimedia session between them.  In this model, one
    participant offers the other a description of the desired session
@@ -128,7 +128,7 @@
    desired session from its own perspective.  In this mode, each of the
    participants in the session has knowledge of the other one.  This is
    the mode of operation used by the Session Initiation Protocol (SIP)
-   [16].
+   [@RFC3261].
 
 ##  Threat Model
 
@@ -166,7 +166,7 @@
    malicious SIP proxy server.  Neither TLS itself nor any mechanisms
    that use it can protect an SDP session against such an attacker.
    Instead, the SDP description itself must be secured through some
-   mechanism; SIP, for example, defines how S/MIME [17] can be used to
+   mechanism; SIP, for example, defines how S/MIME [@RFC3851] can be used to
    secure session descriptions.
 
 ##  The Need for Self-Signed Certificates
@@ -194,7 +194,7 @@
    T.38 fax session over TLS.  For the purpose of brevity, the main
    portion of the session description is omitted in the example, showing
    only the 'm' line and its attributes.  (This example is the same as
-   the first one in RFC 4145 [2], except for the proto parameter and the
+   the first one in RFC 4145 [@!RFC4145], except for the proto parameter and the
    fingerprint attribute.)  See the subsequent sections for explanations
    of the example's TLS-specific attributes.
 
@@ -218,12 +218,12 @@ a=fingerprint:SHA-1 \
 
    The 'm' line in SDP specifies, among other items, the transport
    protocol to be used for the media in the session.  See the "Media
-   Descriptions" section of SDP [1] for a discussion on transport
+   Descriptions" section of SDP [@!RFC4566] for a discussion on transport
    protocol identifiers.
 
    This specification defines a new protocol identifier, 'TCP/TLS',
    which indicates that the media described will use the Transport Layer
-   Security protocol [3] over TCP.  (Using TLS over other transport
+   Security protocol [@!RFC4346] over TCP.  (Using TLS over other transport
    protocols is not discussed in this document.)  The 'TCP/TLS' protocol
    identifier describes only the transport protocol, not the upper-layer
    protocol.  An 'm' line that specifies 'TCP/TLS' MUST further qualify
@@ -231,15 +231,15 @@ a=fingerprint:SHA-1 \
    run over TLS.
 
    Media sessions described with this identifier follow the procedures
-   defined in RFC 4145 [2].  They also use the SDP attributes defined in
+   defined in RFC 4145 [@!RFC4145].  They also use the SDP attributes defined in
    that specification, 'setup' and 'connection'.
 
 #  Fingerprint Attribute
 
    Parties to a TLS session indicate their identities by presenting
    authentication certificates as part of the TLS handshake procedure.
-   Authentication certificates are X.509 [6] certificates, as profiled
-   by RFC 3279 [7], RFC 3280 [8], and RFC 4055 [9].
+   Authentication certificates are X.509 [@!ITU.X509.2000] certificates, as profiled
+   by RFC 3279 [@!RFC3279], RFC 3280 [@!RFC3280], and RFC 4055 [@!RFC4055].
 
    In order to associate media streams with connections and to prevent
    unauthorized barge-in attacks on the media streams, endpoints MUST
@@ -264,13 +264,13 @@ a=fingerprint:SHA-1 \
    bytes is defined by the hash function.  (This is the syntax used by
    openssl and by the browsers' certificate managers.  It is different
    from the syntax used to represent hash values in, e.g., HTTP digest
-   authentication [18], which uses unseparated lowercase hexadecimal
+   authentication [@RFC2617], which uses unseparated lowercase hexadecimal
    bytes.  It was felt that consistency with other applications of
    fingerprints was more important.)
 
    The formal syntax of the fingerprint attribute is given in Augmented
-   Backus-Naur Form [10] in Figure 2.  This syntax extends the BNF
-   syntax of SDP [1].
+   Backus-Naur Form [@!RFC4234] in Figure 2.  This syntax extends the BNF
+   syntax of SDP [@!RFC4566].
 
 ```
 attribute              =/ fingerprint-attribute
@@ -296,13 +296,13 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
    (This ensures that the security properties required for the
    certificate also apply for the fingerprint.  It also guarantees that
    the fingerprint will be usable by the other endpoint, so long as the
-   certificate itself is.)  Following RFC 3279 [7] as updated by RFC
-   4055 [9], therefore, the defined hash functions are 'SHA-1' [11]
-   [19], 'SHA-224' [11], 'SHA-256' [11], 'SHA-384' [11], 'SHA-512' [11],
-   'MD5' [12], and 'MD2' [13], with 'SHA-1' preferred.  A new IANA
+   certificate itself is.)  Following RFC 3279 [@!RFC3279] as updated by RFC
+   4055 [@!RFC4055], therefore, the defined hash functions are 'SHA-1' [11]
+   [@RFC3174], 'SHA-224' [11], 'SHA-256' [11], 'SHA-384' [11], 'SHA-512' [11],
+   'MD5' [@!RFC1321], and 'MD2' [@!RFC1319], with 'SHA-1' preferred.  A new IANA
    registry of Hash Function Textual Names, specified in Section 8,
    allows for addition of future tokens, but they may only be added if
-   they are included in RFCs that update or obsolete RFC 3279 [7].
+   they are included in RFCs that update or obsolete RFC 3279 [@!RFC3279].
    Self-signed certificates (for which legacy certificates are not a
    consideration) MUST use one of the FIPS 180 algorithms (SHA-1,
    SHA-224, SHA-256, SHA-384, or SHA-512) as their signature algorithm,
@@ -321,11 +321,11 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
    describing a TLS session is transmitted over a mechanism that
    provides integrity protection, a certificate asserting any
    syntactically valid identity MAY be used.  For example, an SDP
-   description sent over HTTP/TLS [20] or secured by S/MIME [17] MAY
+   description sent over HTTP/TLS [@RFC2818] or secured by S/MIME [@RFC3851] MAY
    assert any identity in the certificate securing the media connection.
 
    Security protocols that provide only hop-by-hop integrity protection
-   (e.g., the sips protocol [16], SIP over TLS) are considered
+   (e.g., the sips protocol [@RFC3261], SIP over TLS) are considered
    sufficiently secure to allow the mode in which any valid identity is
    accepted.  However, see Section 7 for a discussion of some security
    implications of this fact.
@@ -348,7 +348,7 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
       be used.)
 
 *    Alternately, if the SDP session description of the session was
-      transmitted over a protocol (such as SIP [16]) for which the
+      transmitted over a protocol (such as SIP [@RFC3261]) for which the
       identities of session participants are defined by uniform resource
       identifiers (URIs), the endpoint MAY use a certificate with a
       uniformResourceIdentifier subjectAltName corresponding to the
@@ -357,7 +357,7 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
       (For more details on the validity of URIs, see Section 7.)
 
    Identity matching is performed using the matching rules specified by
-   RFC 3280 [8].  If more than one identity of a given type is present
+   RFC 3280 [@!RFC3280].  If more than one identity of a given type is present
    in the certificate (e.g., more than one dNSName name), a match in any
    one of the set is considered acceptable.  To support the use of
    certificate caches, as described in Section 7, endpoints SHOULD
@@ -373,7 +373,7 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
    match the original fingerprint, the client endpoint MUST terminate
    the media connection with a bad_certificate error.
 
-   If the SDP offer/answer model [5] is being used, the client (the
+   If the SDP offer/answer model [@!RFC3264] is being used, the client (the
    endpoint with the 'setup:active' role) MUST also present a
    certificate following the rules of Section 6.1.  The server MUST
    request a certificate, and if the client does not provide one, or if
@@ -384,7 +384,7 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
    Note that when the offer/answer model is being used, it is possible
    for a media connection to outrace the answer back to the offerer.
    Thus, if the offerer has offered a 'setup:passive' or 'setup:actpass'
-   role, it MUST (as specified in RFC 4145 [2]) begin listening for an
+   role, it MUST (as specified in RFC 4145 [@!RFC4145]) begin listening for an
    incoming connection as soon as it sends its offer.  However, it MUST
    NOT assume that the data transmitted over the TLS connection is valid
    until it has received a matching fingerprint in an SDP answer.  If
@@ -393,7 +393,7 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
    with a bad_certificate error, as stated in the previous paragraph.
 
    If offer/answer is not being used (e.g., if the SDP was sent over the
-   Session Announcement Protocol [15]), there is no secure channel
+   Session Announcement Protocol [@RFC2974]), there is no secure channel
    available for clients to communicate certificate fingerprints to
    servers.  In this case, servers MAY request client certificates,
    which SHOULD be signed by a well-known certification authority, or
@@ -403,7 +403,7 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
 
    This entire document concerns itself with security.  The problem to
    be solved is addressed in Section 1, and a high-level overview is
-   presented in Section 3.  See the SDP specification [1] for security
+   presented in Section 3.  See the SDP specification [@!RFC4566] for security
    considerations applicable to SDP in general.
 
    Offering a TCP/TLS connection in SDP (or agreeing to one in SDP
@@ -434,7 +434,7 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
    a party with which they have communicated in the past.  In this way,
    even in the absence of integrity protection for SDP, the security of
    this document's mechanism is equivalent to that of the Secure Shell
-   (ssh) protocol [21], which is vulnerable to man-in-the-middle attacks
+   (ssh) protocol [@RFC4251], which is vulnerable to man-in-the-middle attacks
    when two parties first communicate, but can detect ones that occur
    subsequently.  (Note that a precise definition of the "other party"
    depends on the application protocol carrying the SDP message.)  Users
@@ -444,7 +444,7 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
 
    To aid interoperability and deployment, security protocols that
    provide only hop-by-hop integrity protection (e.g., the sips protocol
-   [16], SIP over TLS) are considered sufficiently secure to allow the
+   [@RFC3261], SIP over TLS) are considered sufficiently secure to allow the
    mode in which any syntactically valid identity is accepted in a
    certificate.  This decision was made because sips is currently the
    integrity mechanism most likely to be used in deployed networks in
@@ -460,7 +460,7 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
    remote certificate is expected for the remote party.  In particular,
    given call forwarding, third-party call control, or session
    descriptions generated by endpoints controlled by the Gateway Control
-   Protocol [22], it is not always possible in SIP to determine what
+   Protocol [@RFC3525], it is not always possible in SIP to determine what
    entity ought to have generated a remote SDP response.  In general,
    when not using authenticity and integrity protection of SDP
    descriptions, a certificate transmitted over SIP SHOULD assert the
@@ -480,7 +480,7 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
    RTP and RTP Control Protocol (RTCP) packets over a
    connection-oriented channel.  There was no consensus in the working
    group as to whether it would be better to send Secure RTP packets
-   [23] over a connection-oriented transport [24], or whether it would
+   [@RFC3711] over a connection-oriented transport [@RFC4571], or whether it would
    be better to send standard unsecured RTP packets over TLS using the
    mechanisms described in this document.  The group consensus was to
    wait until a use-case requiring secure connection-oriented RTP was
@@ -501,14 +501,14 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
    has been registered by IANA under "Session Description Protocol (SDP)
    Parameters" under "att-field (both session and media level)".
 
-   The SDP specification [1] states that specifications defining new
+   The SDP specification [@!RFC4566] states that specifications defining new
    proto values, like the 'TCP/TLS' proto value defined in this one,
    must define the rules by which their media format (fmt) namespace is
    managed.  For the TCP/TLS protocol, new formats SHOULD have an
    associated MIME registration.  Use of an existing MIME subtype for
    the format is encouraged.  If no MIME subtype exists, it is
    RECOMMENDED that a suitable one be registered through the IETF
-   process [14] by production of, or reference to, a standards-track RFC
+   process [@!RFC4288] by production of, or reference to, a standards-track RFC
    that defines the transport protocol for the format.
 
    This specification creates a new IANA registry named "Hash Function
@@ -516,7 +516,7 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
 
    The names of hash functions used for certificate fingerprints are
    registered by the IANA.  Hash functions MUST be defined by standards-
-   track RFCs that update or obsolete RFC 3279 [7].
+   track RFCs that update or obsolete RFC 3279 [@!RFC3279].
 
    When registering a new hash function textual name, the following
    information MUST be provided:
@@ -527,7 +527,7 @@ UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
       certificates.
 
 * A reference to the standards-track RFC, updating or obsoleting RFC
-      3279 [7], defining the use of the hash function in X.509
+      3279 [@!RFC3279], defining the use of the hash function in X.509
       certificates.
 
 Figure 3 contains the initial values of this registry.
@@ -544,99 +544,6 @@ Hash Function Name     OID                         Reference
 "sha-512"              2.16.840.1.101.3.4.2.3      RFC 4055
 ```
             Figure 3: IANA Hash Function Textual Name Registry
-
-
-
-
-# OLD References
-
-## OLD  Normative References
-
-   [1]   Handley, M., Jacobson, V., and C. Perkins, "SDP: Session
-         Description Protocol", RFC 4566, July 2006.
-
-   [2]   Yon, D. and G. Camarillo, "TCP-Based Media Transport in the
-         Session Description Protocol (SDP)", RFC 4145, September 2005.
-
-   [3]   Dierks, T. and E. Rescorla, "The Transport Layer Security (TLS)
-         Protocol Version 1.1", RFC 4346, April 2006.
-
-   [4]   Bradner, S., "Key words for use in RFCs to Indicate Requirement
-         Levels", BCP 14, RFC 2119, March 1997.
-
-   [5]   Rosenberg, J. and H. Schulzrinne, "An Offer/Answer Model with
-         Session Description Protocol (SDP)", RFC 3264, June 2002.
-
-   [6]   International Telecommunications Union, "Information technology
-         - Open Systems Interconnection - The Directory: Public-key and
-         attribute certificate frameworks", ITU-T Recommendation X.509,
-         ISO Standard 9594-8, March 2000.
-
-   [7]   Bassham, L., Polk, W., and R. Housley, "Algorithms and
-         Identifiers for the Internet X.509 Public Key Infrastructure
-         Certificate and Certificate Revocation List (CRL) Profile",
-         RFC 3279, April 2002.
-
-   [8]   Housley, R., Polk, W., Ford, W., and D. Solo, "Internet X.509
-         Public Key Infrastructure Certificate and Certificate
-         Revocation List (CRL) Profile", RFC 3280, April 2002.
-
-   [9]   Schaad, J., Kaliski, B., and R. Housley, "Additional Algorithms
-         and Identifiers for RSA Cryptography for use in the Internet
-         X.509 Public Key Infrastructure Certificate and Certificate
-         Revocation List (CRL) Profile", RFC 4055, June 2005.
-
-   [10]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
-         Specifications: ABNF", RFC 4234, October 2005.
-
-   [11]  National Institute of Standards and Technology, "Secure Hash
-          Standard", FIPS PUB 180-2, August 2002,
-          http://csrc.nist.gov/publications/fips/fips180-2/fips180-2.pdf.
-
-   [12]  Rivest, R., "The MD5 Message-Digest Algorithm", RFC 1321,
-         April 1992.
-
-   [13]  Kaliski, B., "The MD2 Message-Digest Algorithm", RFC 1319,
-         April 1992.
-
-   [14]  Freed, N. and J. Klensin, "Media Type Specifications and
-         Registration Procedures", BCP 13, RFC 4288, December 2005.
-
-## OLD Informative References
-
-   [15]  Handley, M., Perkins, C., and E. Whelan, "Session Announcement
-         Protocol", RFC 2974, October 2000.
-
-   [16]  Rosenberg, J., Schulzrinne, H., Camarillo, G., Johnston, A.,
-         Peterson, J., Sparks, R., Handley, M., and E. Schooler, "SIP:
-         Session Initiation Protocol", RFC 3261, June 2002.
-
-   [17]  Ramsdell, B., "Secure/Multipurpose Internet Mail Extensions
-         (S/MIME) Version 3.1 Message Specification", RFC 3851, July
-         2004.
-
-   [18]  Franks, J., Hallam-Baker, P., Hostetler, J., Lawrence, S.,
-         Leach, P., Luotonen, A., and L. Stewart, "HTTP Authentication:
-         Basic and Digest Access Authentication", RFC 2617, June 1999.
-
-   [19]  Eastlake, D. and P. Jones, "US Secure Hash Algorithm 1 (SHA1)",
-         RFC 3174, September 2001.
-
-   [20]  Rescorla, E., "HTTP Over TLS", RFC 2818, May 2000.
-
-   [21]  Ylonen, T. and C. Lonvick, "The Secure Shell (SSH) Protocol
-         Architecture", RFC 4251, January 2006.
-
-   [22]  Groves, C., Pantaleo, M., Anderson, T., and T. Taylor, "Gateway
-         Control Protocol Version 1", RFC 3525, June 2003.
-
-   [23]  Baugher, M., McGrew, D., Naslund, M., Carrara, E., and K.
-         Norrman, "The Secure Real-time Transport Protocol (SRTP)",
-         RFC 3711, March 2004.
-
-   [24]  Lazzaro, J., "Framing Real-time Transport Protocol (RTP) and
-         RTP Control Protocol (RTCP) Packets over Connection-Oriented
-         Transport", RFC 4571, July 2006.
 
 
 {backmatter}
