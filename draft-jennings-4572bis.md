@@ -297,18 +297,21 @@ function as is used in the certificate's signature algorithm.  (This
 ensures that the security properties required for the certificate also
 apply for the fingerprint.  It also guarantees that the fingerprint
 will be usable by the other endpoint, so long as the certificate
-itself is.)  Following RFC 3279 [@!RFC3279] as updated by RFC 4055
-[@!RFC4055], therefore, the defined hash functions are 'SHA-1' [11]
-[@RFC3174], 'SHA-224' [11], 'SHA-256' [11], 'SHA-384' [11], 'SHA-512'
-[11], 'MD5' [@!RFC1321], and 'MD2' [@!RFC1319], with 'SHA-1'
-preferred.  A new IANA registry of Hash Function Textual Names,
-specified in Section 8, allows for addition of future tokens, but they
-may only be added if they are included in RFCs that update or obsolete
-RFC 3279 [@!RFC3279].  Self-signed certificates (for which legacy
-certificates are not a consideration) MUST use one of the FIPS 180
-algorithms (SHA-1, SHA-224, SHA-256, SHA-384, or SHA-512) as their
-signature algorithm, and thus also MUST use it to calculate
-certificate fingerprints.
+itself is.)
+Following RFC 3279 [@!RFC3279] as updated by RFC 4055 [@!RFC4055],
+therefore, the defined hash functions are 'SHA-1' [@!FIPS.180-2.2002]
+[@RFC3174], 'SHA-224' [@!FIPS.180-2.2002], 'SHA-256'
+[@!FIPS.180-2.2002], 'SHA-384' [@!FIPS.180-2.2002], 'SHA-512'
+[@!FIPS.180-2.2002], 'MD5' [@!RFC1321], and 'MD2' [@!RFC1319],
+with 'SHA-1' preferred.
+A new IANA registry of Hash Function Textual Names, specified in
+Section 8, allows for addition of future tokens, but they may only be
+added if they are included in RFCs that update or obsolete RFC 3279
+[@!RFC3279].
+Self-signed certificates (for which legacy certificates are not a
+consideration) MUST use one of the FIPS 180 algorithms (SHA-1,
+SHA-224, SHA-256, SHA-384, or SHA-512) as their signature algorithm,
+and thus also MUST use it to calculate certificate fingerprints.
 
 The fingerprint attribute may be either a session-level or a media-
 level SDP attribute.  If it is a session-level attribute, it applies
