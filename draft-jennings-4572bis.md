@@ -21,7 +21,7 @@
 
 %%%
 
-.# Abstract
+.# Abstract {#abstract}
 
 This document specifies how to establish secure connection-oriented
 media transport sessions over the Transport Layer Security (TLS)
@@ -190,7 +190,7 @@ mechanism is described in Section 5.
 
 ##  Example SDP Description for TLS Connection
 
-Figure 1 illustrates an SDP offer that signals the availability of a
+(#example) illustrates an SDP offer that signals the availability of a
 T.38 fax session over TLS.  For the purpose of brevity, the main
 portion of the session description is omitted in the example, showing
 only the 'm' line and its attributes.  (This example is the same as
@@ -212,7 +212,7 @@ a=connection:new
 a=fingerprint:SHA-1 \
        4A:AD:B9:B1:3F:82:18:3B:54:02:12:DF:3E:5D:49:6B:19:E5:7C:AB
 ```
-Figure 1: Example SDP Description Offering a TLS Media Stream
+Figure: Example SDP Description Offering a TLS Media Stream {#example}
 
 #  Protocol Identifiers
 
@@ -270,7 +270,7 @@ hexadecimal bytes.  It was felt that consistency with other
 applications of fingerprints was more important.)
 
 The formal syntax of the fingerprint attribute is given in Augmented
-Backus-Naur Form [@!RFC4234] in Figure 2.  This syntax extends the BNF
+Backus-Naur Form [@!RFC4234] in (#abnf).  This syntax extends the BNF
 syntax of SDP [@!RFC4566].
 
 ```
@@ -290,7 +290,7 @@ fingerprint            =  2UHEX *(":" 2UHEX)
 
 UHEX                   =  DIGIT / %x41-46 ; A-F uppercase
 ```
-Figure 2: Augmented Backus-Naur Syntax for the Fingerprint Attribute
+Figure: Augmented Backus-Naur Syntax for the Fingerprint Attribute {#abnf}
 
 A certificate fingerprint MUST be computed using the same one-way hash
 function as is used in the certificate's signature algorithm.  (This
@@ -534,20 +534,18 @@ information MUST be provided:
    3279 [@!RFC3279], defining the use of the hash function in X.509
    certificates.
 
-Figure 3 contains the initial values of this registry.
+(#hash-names) contains the initial values of this registry.
 
-```
-Hash Function Name     OID                         Reference
-------------------     ---                         ---------
-"md2"                  1.2.840.113549.2.2          RFC 3279
-"md5"                  1.2.840.113549.2.5          RFC 3279
-"sha-1"                1.3.14.3.2.26               RFC 3279
-"sha-224"              2.16.840.1.101.3.4.2.4      RFC 4055
-"sha-256"              2.16.840.1.101.3.4.2.1      RFC 4055
-"sha-384"              2.16.840.1.101.3.4.2.2      RFC 4055
-"sha-512"              2.16.840.1.101.3.4.2.3      RFC 4055
-```
-            Figure 3: IANA Hash Function Textual Name Registry
+Hash Function Name |   OID                      |  Reference
+-------------------|----------------------------|------------
+"md2"              |   1.2.840.113549.2.2       |  RFC 3279
+"md5"              |   1.2.840.113549.2.5       |  RFC 3279
+"sha-1"            |   1.3.14.3.2.26            |  RFC 3279
+"sha-224"          |   2.16.840.1.101.3.4.2.4   |  RFC 4055
+"sha-256"          |   2.16.840.1.101.3.4.2.1   |  RFC 4055
+"sha-384"          |   2.16.840.1.101.3.4.2.2   |  RFC 4055
+"sha-512"          |   2.16.840.1.101.3.4.2.3   |  RFC 4055
+Table: IANA Hash Function Textual Name Registry {#hash-names}
 
 
 {backmatter}
