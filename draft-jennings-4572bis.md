@@ -552,3 +552,7 @@ Hash Function Name     OID                         Reference
 
 {backmatter}
 
+# Acknowledgments
+
+This version of the document included significant contributions by Cullen
+Jennings, Paul Kyzivat, Roman Shpount, and Martin Thomson.
