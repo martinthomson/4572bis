@@ -9,15 +9,15 @@
     [pi]
     symrefs = "no"
     sortrefs = "yes"
-	toc = "yes"
+    toc = "yes"
 
     [[author]]
     initials = "J."
     surname = "Lennox"
-    fullname = " Jonathan Lennox"
-    organization = "Columbia University Department of Computer Science"
+    fullname = "Jonathan Lennox"
+    organization = "Vidyo"
       [author.address]
-      email = " lennox@cs.columbia.edu"
+      email = "jonathan@vidyo.com"
 
 %%%
 
